@@ -1,40 +1,106 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CON LETRA MAYÚSCULA RADIO</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CON LETRA MAYÚSCULA RADIO</title>
+
+    <!-- Estilos básicos -->
+    <style>
+        body {
+            background: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .radio-player {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .play-btn {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            border: none;
+            background: #ff3b3b;
+            color: white;
+            font-size: 32px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(255,0,0,0.5);
+            transition: 0.2s;
+        }
+
+        .play-btn:hover {
+            background: #e60000;
+            transform: scale(1.05);
+        }
+
+        .live-text {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        /* Vúmetro tipo discoteca */
+        #vumeter {
+            width: 100%;
+            max-width: 300px;
+            height: 60px;
+            background: #000;
+            border-radius: 8px;
+            margin: 20px auto;
+            display: block;
+            box-shadow: 0 0 15px #ff00ff;
+        }
+    </style>
 </head>
+
 <body>
 
-  <header class="header">
     <h1>CON LETRA MAYÚSCULA RADIO</h1>
-  </header>
 
-  <section class="clock-section">
-    <div id="clock" class="clock"></div>
-  </section>
-
-  <section class="live-section">
-    <h2>Radio en Directo</h2>
+    <!-- Reproductor -->
     <div class="radio-player">
-    <button id="play-btn" class="play-btn">▶</button>
-    <span class="live-text">Escuchar en directo</span>
-</div>
+        <button id="play-btn" class="play-btn">▶</button>
+        <span class="live-text">Escuchar en directo</span>
+    </div>
 
-<audio id="radio-stream" src="https://stream.zeno.fm/1uk1bcorzuhvv"></audio>
-  </section>
-<canvas id="vumeter" width="300" height="60"></canvas>
-  <section class="podcast-section">
-    <h2>Podcasts</h2>
-    <div id="podcast-list"></div>
-  </section>
+    <!-- Audio real -->
+    <audio id="radio-stream" src="https://stream.zeno.fm/1uk1bcorzuhvv"></audio>
 
-  <footer class="footer">
-    <p>© 2025 CON LETRA MAYÚSCULA RADIO</p>
-  </footer>
+    <!-- Vúmetro tipo discoteca -->
+    <canvas id="vumeter" width="300" height="60"></canvas>
 
-  <script src="app.js"></script>
-</body>
-</html>
+    <!-- Scripts -->
+    <script>
+        // Botón PLAY
+        const audioElement = document.getElementById("radio-stream");
+        const playBtn = document.getElementById("play-btn");
+
+        playBtn.addEventListener("click", () => {
+            audioElement.play();
+        });
+
+        // Vúmetro tipo discoteca (decorativo)
+        const canvas = document.getElementById("vumeter");
+        const ctx = canvas.getContext("2d");
+
+        let bars = 20; 
+        let barWidth = canvas.width / bars - 2;
+
+        function discoVumeter() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            for (let i = 0; i < bars; i++) {
+                let barHeight = Math.random() * canvas.height;
+
+                let r = Math.floor(Math.random() * 255);
+                let g = Math.floor(Math.random() * 255);
+                let b = Math.floor(Math.random() * 255);
+
+                ctx.fillStyle =

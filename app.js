@@ -71,3 +71,29 @@ function drawVumeter() {
 }
 
 drawVumeter();
+const canvas = document.getElementById("vumeter");
+const ctx = canvas.getContext("2d");
+
+let bars = 20; // número de barras
+let barWidth = canvas.width / bars - 2;
+
+function discoVumeter() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    for (let i = 0; i < bars; i++) {
+        // Altura aleatoria para efecto discoteca
+        let barHeight = Math.random() * canvas.height;
+
+        // Colores tipo discoteca
+        let r = Math.floor(Math.random() * 255);
+        let g = Math.floor(Math.random() * 255);
+        let b = Math.floor(Math.random() * 255);
+
+        ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
+        ctx.fillRect(i * (barWidth + 2), canvas.height - barHeight, barWidth, barHeight);
+    }
+
+    requestAnimationFrame(discoVumeter);
+}
+
+discoVumeter();
