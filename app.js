@@ -24,3 +24,9 @@ fetch("podcasts.json")
       container.appendChild(card);
     });
   });
+const audio = document.getElementById("radio-stream");
+const playBtn = document.getElementById("play-btn");
+
+playBtn.addEventListener("click", () => {
+    audio.play();
+});
