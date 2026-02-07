@@ -30,3 +30,44 @@ const playBtn = document.getElementById("play-btn");
 playBtn.addEventListener("click", () => {
     audio.play();
 });
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+const audioElement = document.getElementById("radio-stream");
+const track = audioCtx.createMediaElementSource(audioElement);
+
+const analyser = audioCtx.createAnalyser();
+analyser.fftSize = 64;
+
+track.connect(analyser);
+analyser.connect(audioCtx.destination);
+
+const canvas = document.getElementById("vumeter");
+const ctx = canvas.getContext("2d");
+
+function drawVumeter() {
+    requestAnimationFrame(drawVumeter);
+
+    const bufferLength = analyser.frequencyBinCount;
+    const dataArray = new Uint8Array(bufferLength);
+    analyser.getByteFrequencyData(dataArray);
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    const barWidth = (canvas.width / bufferLength) * 1.5;
+    let x = 0;
+
+    for (let i = 0; i < bufferLength; i++) {
+        const barHeight = dataArray[i] / 2;
+
+        // Colores tipo LED
+        const r = barHeight + 50;
+        const g = 255 - barHeight;
+        const b = 50;
+
+        ctx.fillStyle = `rgb(${r},${g},${b})`;
+        ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
+
+        x += barWidth + 1;
+    }
+}
+
+drawVumeter();
